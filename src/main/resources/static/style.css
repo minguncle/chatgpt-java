@@ -1,0 +1,38 @@
+/* 设置页面字体和背景颜色 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* 设置标题的样式 */
+h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+/* 设置对话框的样式 */
+#chat-box {
+    background-color: #fff;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+/* 设置文本框和发送按钮的样式 */
+#input-box {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+#send-button {
+    display: block;
+    padding: 8px;
+    border: none;
+    background-color: #0080ff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}

@@ -1,0 +1,47 @@
+package com.minguncle.chatgpt.controller;
+
+import com.minguncle.chatgpt.pojo.vo.ChatRequest;
+import com.minguncle.chatgpt.service.OpenAIChatGPTService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+@RestController
+@CrossOrigin
+@Tag(name = "OpenAI Chat GPT API", description = "使用OpenAI的API进行聊天")
+public class OpenAIChatGPTController {
+
+    private final OpenAIChatGPTService chatGptService;
+
+    @Autowired
+    public OpenAIChatGPTController(OpenAIChatGPTService chatGptService) {
+        this.chatGptService = chatGptService;
+    }
+
+    /**
+     * 返回处理过的字符串
+     * @param request
+     * @return
+     */
+    @PostMapping("/chat")
+    @Operation(summary = "根据给定的消息生成聊天内容", description = "根据给定的消息生成聊天内容")
+    public String chat(@RequestBody ChatRequest request) throws Exception {
+        return chatGptService.chat(request);
+    }
+    /**
+     * 流式返回处理过的字符串
+     * @param request
+     * @return
+     */
+    @PostMapping( "/chat/stream")
+    @Operation(summary = "根据给定的消息生成流式聊天内容", description = "根据给定的消息生成流式聊天内容")
+    public SseEmitter SseEmitterchatStream(@RequestBody ChatRequest request) throws Exception {
+        return chatGptService.streamChat(request);
+    }
+
+}

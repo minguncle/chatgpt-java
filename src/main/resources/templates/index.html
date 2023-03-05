@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+<body>
+<div>
+    <h2>Chat Demo</h2>
+    <div id="chat-box" style="border: 1px solid black; height: 200px; overflow-y: scroll;"></div>
+    <input type="text" id="input-box">
+    <button id="send-button">Send</button>
+</div>
+<script>
+    // 绑定发送按钮的点击事件
+    $('#send-button').click(function() {
+        sendMessage();
+    });
+
+    function sendMessage() {
+        var content = $('#input-box').val();
+        var payload = { "model": "gpt-3.5-turbo", "messages": [{"role": "user", "content": content}] };
+        $.ajax({
+            url: "http://localhost:8082/chat/",
+            type: "POST",
+            data: JSON.stringify(payload),
+            contentType: "application/json",
+            success: function(response) {
+                // 更新对话框内容
+                $('#chat-box').append('<div><strong>You:</strong> ' + content + '</div>');
+                $('#chat-box').append('<div><strong>Chatbot:</strong> ' + response + '</div>');
+            },
+            error: function(xhr, status, error) {
+                alert("Error sending message: " + error);
+            }
+        });
+    }
+</script>
+</body>
+</html>

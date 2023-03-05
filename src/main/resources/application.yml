@@ -1,0 +1,23 @@
+openai:
+  apiKey: <YOUR_API_KEY>
+knife4j:
+  enable: true
+spring:
+  application:
+    name: ChatGPT
+  web:
+    resources:
+      static-locations: classpath:/static/
+server:
+  port: 8082
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    show-extensions: true
+  api-docs:
+    path: /v3/api-docs
+  default-flat-param-object: true
+
