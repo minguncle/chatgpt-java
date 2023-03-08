@@ -3,7 +3,7 @@ package com.minguncle.chatgpt.utils.api;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.minguncle.chatgpt.pojo.vo.ChatRequest;
+import com.minguncle.chatgpt.pojo.vo.OriginChatRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,7 +50,7 @@ public class OpenAIChatGPTApiClient {
     }
 
 
-    public String chat(ChatRequest request) {
+    public String chat(OriginChatRequest request) {
         try {
             RequestBody body = RequestBody.create(JSON.toJSONString(request), MediaType.parse("application/json"));
             Request apiRequest = new Request.Builder()
@@ -81,7 +81,7 @@ public class OpenAIChatGPTApiClient {
         return "";
     }
 
-    public void streamChat(ChatRequest request, EventSourceListener eventSourceListener, String traceId) {
+    public void streamChat(OriginChatRequest request, EventSourceListener eventSourceListener, String traceId) {
         try {
             EventSource.Factory factory = EventSources.createFactory(this.okHttpClient);
             Request apiRequest = new Request.Builder()

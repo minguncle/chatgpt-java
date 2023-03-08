@@ -13,6 +13,9 @@ import okhttp3.sse.EventSourceListener;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 
+/**
+ * Sse返回处理类
+ */
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor

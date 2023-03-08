@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRequest {
+public class OriginChatRequest {
 
     @Schema(description = "模型ID，目前只支持gpt-3.5-turbo和gpt-3.5-turbo-0301", example = "gpt-3.5-turbo", required = true)
     private String model;
@@ -31,6 +31,9 @@ public class ChatRequest {
     @Schema(description = "每个输入消息要生成的聊天完成选择数量。")
     private Integer n;
 
+    @Schema(description = "是否使用流式传输，如果设置，则会发送部分消息增量，就像ChatGPT一样。Token将作为仅包含数据的服务器发送事件发送，随着它们可用，流将由data: [DONE]消息终止。")
+    private Boolean stream;
+
     @Schema(description = "最多允许生成的答案的最大标记数。默认情况下，模型可以返回的标记数为（4096 -提示标记数）。")
     private Integer maxTokens;
 
@@ -43,8 +46,8 @@ public class ChatRequest {
     @Schema(description = "修改特定标记出现在完成中的可能性。接受将标记（由其在标记器中的标记ID指定）映射到-100到100的关联偏差值的json对象。在采样之前，数学上将偏差添加到模型生成的标志物中的logit。确切的效果将因模型而异，但值介于-1和1之间应该会减少或增加选择的可能性；值为-100或100应该导致禁止或专有选择相关标记。")
     private JSONObject logitBias;
 
-    @Schema(description = "流式传输时用于标记客户端,需要先建立sse连接。")
-    private String userID;
+    @Schema(description = "用于表示终端用户的唯一标识符，可帮助OpenAI监视和检测滥用。了解更多。")
+    private String user;
 
     @Schema(description = "当达到以下任意一个序列时，API将停止生成进一步的标记。")
     private JSONArray stop;
