@@ -18,4 +18,11 @@ public interface OpenAIChatGPTService {
      * @return
      */
     void streamChat(ChatRequest request);
+
+    /**
+     * ChatGPT Proxy
+     * @param request
+     * @return
+     */
+    Object completions(ChatRequest request);
 }

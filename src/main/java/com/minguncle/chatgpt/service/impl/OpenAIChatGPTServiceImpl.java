@@ -8,12 +8,12 @@ import com.minguncle.chatgpt.service.SseEventService;
 import com.minguncle.chatgpt.utils.api.OpenAIChatGPTApiClient;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.annotation.Resource;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * api服务实现类
@@ -29,9 +29,9 @@ public class OpenAIChatGPTServiceImpl implements OpenAIChatGPTService {
     @Resource
     private SseEventService sseEventService;
 
-    @Autowired
-    public static void setApiClient(OpenAIChatGPTApiClient apiClient) {
-        OpenAIChatGPTServiceImpl.apiClient = apiClient;
+
+    static {
+        OpenAIChatGPTServiceImpl.apiClient = new OpenAIChatGPTApiClient("apikey");
     }
 
     @Override
@@ -42,6 +42,24 @@ public class OpenAIChatGPTServiceImpl implements OpenAIChatGPTService {
         return apiClient.chat(chatRequest);
     }
 
+    /**
+     * ChatGPT Proxy
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Object completions(ChatRequest request) {
+        Optional<String> userID = Optional.of(UUID.randomUUID().toString());
+        SseEmitter sseEmitter = sseEventService.getSseEmitter(userID.get());
+        OriginChatRequest chatRequest = new OriginChatRequest();
+        BeanUtils.copyProperties(request, chatRequest);
+        chatRequest.setStream(true);
+        ChatGPTEventListener chatGPTEventListener = new ChatGPTEventListener(sseEmitter, userID.get(),request);
+        apiClient.streamChat(chatRequest, chatGPTEventListener, userID.get());
+        return sseEmitter;
+    }
+
     @Override
     @SneakyThrows
     public void streamChat(ChatRequest request) {
@@ -50,7 +68,7 @@ public class OpenAIChatGPTServiceImpl implements OpenAIChatGPTService {
         OriginChatRequest chatRequest = new OriginChatRequest();
         BeanUtils.copyProperties(request, chatRequest);
         chatRequest.setStream(true);
-        ChatGPTEventListener chatGPTEventListener = new ChatGPTEventListener(sseEmitter, userID.get());
+        ChatGPTEventListener chatGPTEventListener = new ChatGPTEventListener(sseEmitter, userID.get(),request);
         apiClient.streamChat(chatRequest, chatGPTEventListener, userID.get());
     }
 }

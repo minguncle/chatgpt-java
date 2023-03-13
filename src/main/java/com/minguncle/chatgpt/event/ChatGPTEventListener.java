@@ -3,7 +3,7 @@ package com.minguncle.chatgpt.event;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import lombok.AllArgsConstructor;
+import com.minguncle.chatgpt.pojo.vo.ChatRequest;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +17,21 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
  * Sse返回处理类
  */
 @Slf4j
-@AllArgsConstructor
 @NoArgsConstructor
 public class ChatGPTEventListener extends EventSourceListener {
 
     private SseEmitter sseEmitter;
 
     private String traceId;
+
+    private ChatRequest params;
+    private static final StringBuffer lastContent = new StringBuffer("");
+
+    public ChatGPTEventListener(SseEmitter sseEmitter, String traceId, ChatRequest params) {
+        this.sseEmitter = sseEmitter;
+        this.traceId = traceId;
+        this.params = params;
+    }
 
     @Override
     public void onOpen(EventSource eventSource, Response response) {
@@ -35,7 +43,7 @@ public class ChatGPTEventListener extends EventSourceListener {
     @Override
     public void onEvent(EventSource eventSource, String id, String type, String data) {
         if (data.equals("[DONE]")) {
-            log.info("OpenAI服务器发送结束标志!,traceId[{}]", traceId);
+            log.info("OpenAI服务器发送结束标志!,content:[{}],param:[{}],traceId:[{}]", lastContent,params,traceId);
             sseEmitter.send(SseEmitter.event()
                     .id("[DONE]")
                     .data("[DONE]")
@@ -53,9 +61,11 @@ public class ChatGPTEventListener extends EventSourceListener {
             String text = deltaJson.getString("content");
             if (text != null) {
                 content = text;
+                log.debug("接受消息:[{}],traceId[{}]", content.trim(),traceId);
                 sseEmitter.send(SseEmitter.event()
-                        .data(content.trim())
+                        .data(data)
                         .reconnectTime(2000));
+                lastContent.append(text);
             }
         }
     }

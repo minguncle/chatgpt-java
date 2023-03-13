@@ -88,6 +88,7 @@ public class OpenAIChatGPTApiClient {
                     .url(URL)
                     .post(RequestBody.create(JSON.toJSONString(request), MediaType.parse("application/json")))
                     .header("Authorization", "Bearer " + this.apiKey)
+                    .header("Content-type", "application/octet-stream")
                     .build();
             EventSource eventSource = factory.newEventSource(apiRequest, eventSourceListener);
         } catch (Exception e) {

@@ -48,4 +48,14 @@ public class OpenAIChatGPTController {
         chatGptService.streamChat(request);
     }
 
+    /**
+     * ChatGPT Proxy
+     * @param request
+     * @throws Exception
+     */
+    @PostMapping("/v1/chat/completions")
+    @Operation(summary = "ChatGpt转发接口", description = "ChatGpt转发接口")
+    public Object completions(@RequestBody ChatRequest request) throws Exception {
+        return chatGptService.completions(request);
+    }
 }

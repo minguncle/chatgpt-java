@@ -29,13 +29,15 @@ public class SseEventServiceImpl implements SseEventService {
      * @return
      */
     @Override
-    public SseEmitter connect(String userId) throws Exception {
-        SseEmitter sseEmitter = new SseEmitter(0L);
-        sseEmitter.send(SseEmitter.event().data("连接成功"));
-        map.put(userId, sseEmitter);
-        count.getAndIncrement();
-        log.info("创建新的sse连接，当前用户：{}", userId);
-        return sseEmitter;
+    public SseEmitter connect(String userId)  {
+
+            SseEmitter sseEmitter = new SseEmitter(0L);
+            //sseEmitter.send(SseEmitter.event().data("连接成功"));
+            map.put(userId, sseEmitter);
+            count.getAndIncrement();
+            log.info("创建新的sse连接，当前用户：{}", userId);
+            return sseEmitter;
+
     }
 
     /**
@@ -44,6 +46,10 @@ public class SseEventServiceImpl implements SseEventService {
      * @return
      */
     public SseEmitter getSseEmitter(String userID) {
-        return map.get(userID);
+        SseEmitter sseEmitter = map.get(userID);
+        if (sseEmitter == null) {
+            return connect(userID);
+        }
+        return sseEmitter;
     }
 }
