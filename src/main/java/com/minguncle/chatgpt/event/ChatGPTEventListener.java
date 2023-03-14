@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.minguncle.chatgpt.pojo.vo.ChatRequest;
+import com.minguncle.chatgpt.service.impl.SseEventServiceImpl;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -43,11 +44,12 @@ public class ChatGPTEventListener extends EventSourceListener {
     @Override
     public void onEvent(EventSource eventSource, String id, String type, String data) {
         if (data.equals("[DONE]")) {
-            log.info("OpenAI服务器发送结束标志!,content:[{}],param:[{}],traceId:[{}]", lastContent,params,traceId);
+            log.info("OpenAI服务器发送结束标志!,content:[{}],traceId:[{}]", lastContent,traceId);
             sseEmitter.send(SseEmitter.event()
                     .id("[DONE]")
                     .data("[DONE]")
                     .reconnectTime(3000));
+            SseEventServiceImpl.remove(traceId);
             return;
         }
         JSONObject jsonObject = JSON.parseObject(data);
@@ -74,6 +76,7 @@ public class ChatGPTEventListener extends EventSourceListener {
     @Override
     public void onClosed(EventSource eventSource) {
         log.info("OpenAI服务器关闭连接!,traceId[{}]", traceId);
+        SseEventServiceImpl.closeAndRemove(traceId);
     }
 
 
@@ -82,5 +85,6 @@ public class ChatGPTEventListener extends EventSourceListener {
     public void onFailure(EventSource eventSource, Throwable t, Response response) {
         log.error("OpenAI服务器连接异常!response：[{}]，traceId[{}]", response, traceId, t);
         eventSource.cancel();
+        SseEventServiceImpl.closeAndRemove(traceId);
     }
 }

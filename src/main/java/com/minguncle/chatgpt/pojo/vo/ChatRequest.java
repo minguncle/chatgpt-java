@@ -3,10 +3,7 @@ package com.minguncle.chatgpt.pojo.vo;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -34,6 +31,9 @@ public class ChatRequest {
     @Schema(description = "最多允许生成的答案的最大标记数。默认情况下，模型可以返回的标记数为（4096 -提示标记数）。")
     private Integer maxTokens;
 
+    @Schema(description = "是否使用流式传输，如果设置，则会发送部分消息增量，就像ChatGPT一样。Token将作为仅包含数据的服务器发送事件发送，随着它们可用，流将由data: [DONE]消息终止。")
+    private Boolean stream;
+
     @Schema(description = "基于它们是否已在到目前为止的文本中出现，对新标记进行惩罚的数字，介于-2.0和2.0之间的数字。正值会增加模型谈论新话题的可能性。")
     private Double presencePenalty;
 
@@ -44,7 +44,7 @@ public class ChatRequest {
     private JSONObject logitBias;
 
     @Schema(description = "流式传输时用于标记客户端,需要先建立sse连接。")
-    private String userID;
+    private String traceId;
 
     @Schema(description = "当达到以下任意一个序列时，API将停止生成进一步的标记。")
     private JSONArray stop;

@@ -19,8 +19,8 @@ public class SseEventController {
     @Resource
     SseEventService sseEventService;
 
-    @GetMapping(value = "/connect/{userId}", produces = "text/event-stream;charset=UTF-8")
-    public SseEmitter connect(@PathVariable("userId") String userId) throws Exception {
-        return sseEventService.connect(userId);
+    @GetMapping(value = "/connect/{traceId}", produces = "text/event-stream;charset=UTF-8")
+    public SseEmitter connect(@PathVariable("traceId") String traceId) throws Exception {
+        return sseEventService.connect(traceId);
     }
 }

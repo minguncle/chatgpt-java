@@ -1,6 +1,7 @@
 package com.minguncle.chatgpt.service;
 
 import com.minguncle.chatgpt.pojo.vo.ChatRequest;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface OpenAIChatGPTService {
     /**
@@ -17,7 +18,7 @@ public interface OpenAIChatGPTService {
      * @param request
      * @return
      */
-    void streamChat(ChatRequest request);
+    SseEmitter streamChat(ChatRequest request);
 
     /**
      * ChatGPT Proxy

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * OpenAI Chat GPT API接口
@@ -44,8 +45,8 @@ public class OpenAIChatGPTController {
      */
     @PostMapping( "/chat/stream")
     @Operation(summary = "根据给定的消息生成流式聊天内容", description = "根据给定的消息生成流式聊天内容")
-    public void SseEmitterchatStream(@RequestBody ChatRequest request) throws Exception {
-        chatGptService.streamChat(request);
+    public SseEmitter SseEmitterchatStream(@RequestBody ChatRequest request) throws Exception {
+        return chatGptService.streamChat(request);
     }
 
     /**

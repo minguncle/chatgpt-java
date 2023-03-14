@@ -1,5 +1,7 @@
 openai:
   apiKey: <YOUR_API_KEY>
+  proxy-host: 127.0.0.1
+  proxy-port: 7890
 knife4j:
   enable: true
 spring:
@@ -20,4 +22,6 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   default-flat-param-object: true
-
+logging:
+  level:
+    root: info

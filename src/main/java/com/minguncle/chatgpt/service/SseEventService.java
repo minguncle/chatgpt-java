@@ -11,16 +11,16 @@ public interface SseEventService {
     /**
      * 建立Sse连接
      *
-     * @param userId
+     * @param traceId
      * @return
      */
-    SseEmitter connect(String userId) throws Exception;
+    SseEmitter connect(String traceId) throws Exception;
 
     /**
      * 根据id获取sse实例
      *
-     * @param userID
+     * @param traceId
      * @return
      */
-    SseEmitter getSseEmitter(String userID);
+    SseEmitter getSseEmitter(String traceId);
 }
