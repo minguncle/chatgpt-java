@@ -61,9 +61,9 @@
 - `src/main/java/com/minguncle/chatgpt/controller/`：REST接口控制器
 - `src/main/java/com/minguncle/chatgpt/service/`：服务接口和服务实现类
 - `src/main/java/com/minguncle/chatgpt/utils/api/`：OpenAI API接口的Java实现
-- 'src/main/java/com/minguncle/chatgpt/event'：SSE回调实现，可以按需定义实现增强业务
-- 'src/main/java/com/minguncle/chatgpt/aop'：日志增强实现
-- 'src/main/java/com/minguncle/chatgpt/config'：项目配置
+- `src/main/java/com/minguncle/chatgpt/event`：SSE回调实现，可以按需定义实现增强业务
+- `src/main/java/com/minguncle/chatgpt/aop`：日志增强实现
+- `src/main/java/com/minguncle/chatgpt/config`：项目配置
 
 ### 技术栈
 
