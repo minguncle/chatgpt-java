@@ -115,8 +115,6 @@
             <artifactId>okhttp-sse</artifactId>
             <version>4.9.3</version>
         </dependency>
-
-
     </dependencies>
 
     <build>
