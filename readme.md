@@ -4,7 +4,7 @@
 
 ### 安装和使用
 
-1. 克隆项目到本地：`git clone https://github.com/your_username/OpenAI-Chat-GPT-API.git`
+1. 克隆项目到本地：`git clone https://github.com/minguncle/chatgpt-java.git`
 
 2. 配置API Key和代理
 
