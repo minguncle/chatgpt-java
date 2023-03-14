@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.minguncle</groupId>
-    <artifactId>chatgpt</artifactId>
+    <artifactId>chatgpt-java</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>chatgpt</name>
-    <description>chatgpt</description>
+    <name>chatgpt-java</name>
+    <description>chatgpt-java</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
