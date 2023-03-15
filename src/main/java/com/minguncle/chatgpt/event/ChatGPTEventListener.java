@@ -26,7 +26,7 @@ public class ChatGPTEventListener extends EventSourceListener {
     private String traceId;
 
     private ChatRequest params;
-    private static final StringBuffer lastContent = new StringBuffer("");
+    private StringBuffer lastContent = new StringBuffer("");
 
     public ChatGPTEventListener(SseEmitter sseEmitter, String traceId, ChatRequest params) {
         this.sseEmitter = sseEmitter;
@@ -44,7 +44,7 @@ public class ChatGPTEventListener extends EventSourceListener {
     @Override
     public void onEvent(EventSource eventSource, String id, String type, String data) {
         if (data.equals("[DONE]")) {
-            log.info("OpenAI服务器发送结束标志!,content:[{}],traceId:[{}]", lastContent,traceId);
+            log.info("OpenAI服务器发送结束标志!,content:[{}],traceId:[{}]", lastContent, traceId);
             sseEmitter.send(SseEmitter.event()
                     .id("[DONE]")
                     .data("[DONE]")
@@ -59,11 +59,12 @@ public class ChatGPTEventListener extends EventSourceListener {
             content = "";
         } else {
             JSONObject choiceJson = choicesJsonArray.getJSONObject(0);
+            log.debug("received msg:[{}]", data);
             JSONObject deltaJson = choiceJson.getJSONObject("delta");
             String text = deltaJson.getString("content");
             if (text != null) {
                 content = text;
-                log.debug("接受消息:[{}],traceId[{}]", content.trim(),traceId);
+                log.debug("接受消息:[{}],traceId[{}]", content.trim(), traceId);
                 sseEmitter.send(SseEmitter.event()
                         .data(data)
                         .reconnectTime(2000));
